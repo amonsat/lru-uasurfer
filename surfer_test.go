@@ -1,12 +1,23 @@
 package lruuasurfer
 
 import (
+	"sync"
 	"testing"
 
 	"github.com/avct/uasurfer"
 )
 
-func BenchmarkParse(b *testing.B) {
+func BenchmarkParseUasurfer(b *testing.B) {
+	b.ResetTimer()
+
+	num := len(testUAVars)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		uasurfer.Parse(testUAVars[i%num].UA)
+	}
+}
+
+func BenchmarkParseLRU(b *testing.B) {
 	s := New()
 
 	b.ResetTimer()
@@ -16,6 +27,29 @@ func BenchmarkParse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		s.Parse(testUAVars[i%num].UA)
 	}
+}
+
+func BenchmarkParseMap(b *testing.B) {
+	b.ResetTimer()
+
+	num := len(testUAVars)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		cacheParse(testUAVars[i%num].UA)
+	}
+}
+
+var cache sync.Map
+
+func cacheParse(ua string) *uasurfer.UserAgent {
+	if val, ok := cache.Load(ua); ok {
+		return val.(*uasurfer.UserAgent)
+	}
+
+	result := uasurfer.Parse(ua)
+	cache.Store(ua, result)
+
+	return result
 }
 
 var testUAVars = []struct {
