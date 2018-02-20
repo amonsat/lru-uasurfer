@@ -10,7 +10,7 @@ package main
 import (
 	"fmt"
 
-	surfer "github.com/Amonsat/lru-uasurfer"
+	surfer "github.com/amonsat/lru-uasurfer"
 )
 
 func main() {
