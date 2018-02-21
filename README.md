@@ -2,6 +2,10 @@
 Golang LRU wrapping for [ua-surfer](https://github.com/avct/uasurfer).
 ## Use
 
+### Instalation
+```
+	go get github.com/amonsat/lru-uasurfer
+```
 ### Basic Use
 
 ```go
