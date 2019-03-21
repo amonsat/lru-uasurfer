@@ -31,3 +31,12 @@ func main() {
 	s.SaveDump("")
 }
 ```
+
+### Benchmarks
+
+origin uasurfer vs lruCache vs syncMap
+```
+BenchmarkParseUasurfer-4        1000000        1746 ns/op        142 B/op        1 allocs/op
+BenchmarkParseLRU-4            10000000         172 ns/op          0 B/op        0 allocs/op
+BenchmarkParseMap-4            20000000        77.6 ns/op          0 B/op        0 allocs/op
+```
